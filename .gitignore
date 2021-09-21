@@ -1,0 +1,10 @@
+# Python binaries
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pyenv
+.python-version
+
+# Database file
+worfometer.sqlite
