@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from util import ceil_dt
-from datetime import timedelta
+from datetime import timedelta, datetime
 import sqlite3
 
 
@@ -27,7 +27,7 @@ _upsert_query = """
 """
 
 
-def add_rotations(db, rotations, timestamp, event_delta=default_event_delta):
+def add_rotations(db, rotations: int, timestamp: datetime, event_delta=default_event_delta):
     event_time = ceil_dt(timestamp, event_delta)
 
     cc = db.cursor()
