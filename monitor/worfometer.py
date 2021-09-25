@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--db', help='The path to the database file.')
     args = parser.parse_args()
 
-    db_path = args.db or os.path.join(os.path.dirname(__file__), 'worfometer.sqlite')
+    db_path = args.db or os.path.join(os.path.dirname(__file__), '..', 'worfometer.sqlite')
 
     try:
         connection = sqlite3.connect(db_path)
