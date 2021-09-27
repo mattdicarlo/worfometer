@@ -9,5 +9,8 @@ __pycache__/
 # mypy
 .mypy_cache
 
+# virtualenv
+.venv/
+
 # Database file
 worfometer.sqlite
