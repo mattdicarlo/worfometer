@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Worfometer</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.0/chartjs-adapter-moment.min.js" integrity="sha512-oh5t+CdSBsaVVAvxcZKy3XJdP7ZbYUBSRCXDTVn0ODewMDDNnELsrG9eDm8rVZAQg7RsDD/8K3MjPAFB13o6eA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <div id="chartContainer" style="padding-left: 5%; width: 90%;">
+            <canvas id="chartCanvas">
+                Rotations graph.
+            </canvas>
+        </div>
+        <div id="textData">
+            <p>{{total_rotations}} rotations in the last 24 hours.</p>
+            <p>{{datapoints}}</p>
+        </div>
+
+        <script>
+        var ctx = document.getElementById('chartCanvas').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Rotations',
+                    data: {{datapoints|tojson}},
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    spanGaps: false,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxis: {
+                        beginAtZero: true,
+                    },
+                    xAxis: {
+                        type: 'time',
+                        min: '{{start_time|dt_iso}}',
+                        max: '{{end_time|dt_iso}}',
+                    },
+                },
+                /*plugins: {
+                    decimation: {
+                        enabled: true
+                    },
+                },*/
+            }
+        });
+        </script>
+    </body>
+</html>
