@@ -14,7 +14,7 @@ def interval_dts(start: datetime, interval: timedelta, stop: datetime):
         nn += interval
 
 
-@bp.route('/index.html', methods=['GET'])
+@bp.route('/', methods=['GET'])
 def index():
     datapoints = []
     total_rotations = 0
