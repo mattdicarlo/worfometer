@@ -10,6 +10,10 @@ fi
 
 set -e
 
+rm -f /etc/nginx/sites-enabled/default
+ln -s -f "${script_dir}/web/worfometer-nginx.conf" "/etc/nginx/sites-enabled/"
+systemctl reload nginx
+
 ln -s -f "${script_dir}/monitor/worfometer-monitor.service" "${install_dir}"
 ln -s -f "${script_dir}/web/worfometer-web.service" "${install_dir}"
 
