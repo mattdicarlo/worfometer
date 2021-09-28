@@ -1,0 +1,15 @@
+[Unit]
+Description=Worfometer web app
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/worfometer/web
+ExecStart=/opt/worfometer/web/run_prod.sh
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=3
+User=pi
+
+[Install]
+WantedBy=multi-user.target

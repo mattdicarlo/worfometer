@@ -1,0 +1,15 @@
+[Unit]
+Description=Worfometer wheel monitor
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/worfometer/monitor
+ExecStart=/opt/worfometer/monitor/run_prod.sh
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=3
+User=pi
+
+[Install]
+WantedBy=multi-user.target
