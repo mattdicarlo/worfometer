@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/opt/worfometer/web
-ExecStart=/opt/worfometer/web/run_prod.sh
+ExecStart=/opt/worfometer/web/web-prod.sh
 Environment=PYTHONUNBUFFERED=1
 Restart=always
 RestartSec=3

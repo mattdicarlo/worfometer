@@ -18,7 +18,7 @@ class Odometer:
         self._DEBOUNCE = timedelta(milliseconds=100)
 
         self._previous_time = utc_now()
-        self._previous_state = self.OPEN_STATE
+        self._previous_state = self._OPEN_STATE
 
         self.total_rotations = 0
 
