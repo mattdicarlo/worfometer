@@ -24,7 +24,7 @@ def index():
     try:
         now = utc_now()
         interval = timedelta(minutes=5)
-        start_time = ceil_dt(now - timedelta(hours=12), interval)
+        start_time = ceil_dt(now - timedelta(hours=24), interval)
         for interval_start in interval_dts(start_time, interval, now):
             interval_end = interval_start + interval
             res = cur.execute(
@@ -34,9 +34,9 @@ def index():
                 """,
                 [interval_start, interval_end]
             )
-            rotations = res.fetchone()[0]
-            datapoints.append({'x': interval_start, 'y': rotations})
-            total_rotations += (rotations or 0)
+            rotations = res.fetchone()[0] or 0
+            datapoints.append([interval_start, rotations])
+            total_rotations += rotations
         #start_time = now - timedelta(hours=12)
         #res = cur.execute(
         #    """SELECT event_time, rotations
