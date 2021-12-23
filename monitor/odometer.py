@@ -34,7 +34,7 @@ class Odometer:
             self._previous_state = current_state
             if current_state != self._OPEN_STATE:
                 self.total_rotations += 1
-                print(f'count: {self.total_rotations}\tdelta: {delta.total_seconds() * 1000}ms')
+                # print(f'count: {self.total_rotations}\tdelta: {delta.total_seconds() * 1000}ms')
                 return (1, current_time)
 
         return (0, current_time)

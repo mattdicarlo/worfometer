@@ -9,14 +9,14 @@
         <div id="chartContainer" style="padding-left: 5%; width: 90%; height: 400px;">
         </div>
         <div id="textData">
-            <p>{{total_rotations}} rotations in the last 24 hours.</p>
+            <p>{{total_rotations}} rotations ({{total_distance | round(precision=1)}} meters) in the last 24 hours.</p>
         </div>
 
         <script>
             const data = [
                 {% for ii in datapoints%}[
                     moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
-                    {{ii[1]}}
+                    {{ii[2]}}
                 ],{% endfor %}
             ];
 
@@ -40,17 +40,20 @@
                     },
                     yAxis: {
                         title: {
-                            text:'Rotations per minute',
+                            text:'Meters per minute',
                         },
                         min: 0,
                     },
                     series: [{
                         type: 'area',
-                        name: 'Rotations',
+                        name: 'Meters',
                         data: data,
                     }],
                     time: {
                         useUTC: false,
+                    },
+                    tooltip: {
+                        valueDecimals: 2
                     },
                     credits: {
                         enabled: false,

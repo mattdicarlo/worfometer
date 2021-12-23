@@ -14,6 +14,13 @@ def interval_dts(start: datetime, interval: timedelta, stop: datetime):
         nn += interval
 
 
+def rotations_to_meters(rotations: int) -> float:
+    # The wheel is 10.5" at the outside and 9.5" at the inside, so
+    # let's call it 10" or .254 meters, which makes the circumference
+    # 2 × pi × (0.254 m / 2) = 0.797964534 m
+    return rotations * 0.797964534
+
+
 @bp.route('/', methods=['GET'])
 def index():
     datapoints = []
@@ -35,7 +42,7 @@ def index():
                 [interval_start, interval_end]
             )
             rotations = res.fetchone()[0] or 0
-            datapoints.append([interval_start, rotations])
+            datapoints.append([interval_start, rotations, rotations_to_meters(rotations)])
             total_rotations += rotations
         #start_time = now - timedelta(hours=12)
         #res = cur.execute(
@@ -51,10 +58,13 @@ def index():
     finally:
         cur.close()
 
+    total_distance = rotations_to_meters(total_rotations)
+
     return flask.render_template(
         'index.html',
         start_time=start_time,
         end_time=now,
         datapoints=datapoints,
         total_rotations=total_rotations,
+        total_distance=total_distance,
     )
