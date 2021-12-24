@@ -42,11 +42,21 @@ def setup_logging(app):
 
 
 def register_filters(app):
-    from datetime import datetime
+    from datetime import datetime, timedelta
 
     def dt_iso(value: datetime):
         # YYYY-MM-DDTHH:mm:ss.sssZ
         # return value.strftime('%Y-%m-%dT%H:%M:%S.000%z')
         return value.isoformat()
 
+    def humanize_filter(value):
+        import humanize
+        if isinstance(value, timedelta):
+            return humanize.precisedelta(value, minimum_unit='seconds')
+        elif isinstance(value, float):
+            return humanize.intcomma(value, ndigits=1)
+        elif isinstance(value, int):
+            return humanize.intcomma(value)
+
     app.jinja_env.filters['dt_iso'] = dt_iso
+    app.jinja_env.filters['humanize'] = humanize_filter
