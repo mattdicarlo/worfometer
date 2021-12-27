@@ -11,50 +11,99 @@
         </style>
     </head>
     <body>
-        <div id="chartContainer" style="padding-left: 5%; width: 90%; height: 400px;">
-        </div>
+        <h1>Hedgehog Spinnies</h1>
+        <div id="lastDayChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
+        <div id="lastWeekChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
         <div id="textData">
-            <p>{{total_rotations | humanize}} rotations
-               ({{total_distance_meters | humanize}} meters,
-               {{total_distance_miles | humanize}} miles) in the last 24 hours.</p>
+            <p>{{last_day_rotations | humanize}} rotations
+               ({{last_day_distance_meters | humanize}} meters,
+               {{last_day_distance_miles | humanize}} miles) in the last 24 hours.</p>
+            <p>{{last_week_rotations | humanize}} rotations
+               ({{last_week_distance_meters | humanize}} meters,
+               {{last_week_distance_miles | humanize}} miles) in the last 7 days.</p>
         </div>
 
         <script>
-            const data = [
-                {% for ii in datapoints%}[
+            const dayData = [
+                {% for ii in last_day_data%}[
                     moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
                     {{ii[2]}}
                 ],{% endfor %}
             ];
+            const dayStartTime = moment.utc('{{last_day_start_time|dt_iso}}');
+            const dayEndTime = moment.utc('{{last_day_end_time|dt_iso}}');
 
-            const startTime = moment.utc('{{start_time|dt_iso}}');
-            const endTime = moment.utc('{{end_time|dt_iso}}');
+            const weekData = [
+                {% for ii in last_week_data%}[
+                    moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
+                    {{ii[2]}}
+                ],{% endfor %}
+            ];
+            const weekStartTime = moment.utc('{{last_week_start_time|dt_iso}}');
+            const weekEndTime = moment.utc('{{last_week_end_time|dt_iso}}');
+
 
             document.addEventListener('DOMContentLoaded', function () {
-                const chart = Highcharts.chart({
+                const dayChart = Highcharts.chart({
                     chart: {
-                        renderTo: 'chartContainer',
+                        renderTo: 'lastDayChart',
                         type: 'line',
                         zoomType: 'x',
                     },
                     title: {
-                        text: 'Hedgehog Spinnies',
+                        text: 'Last 24 hours',
                     },
                     xAxis: {
                         type: 'datetime',
-                        min: startTime.toDate().getTime(),
-                        max: endTime.toDate().getTime(),
+                        min: dayStartTime.toDate().getTime(),
+                        max: dayEndTime.toDate().getTime(),
                     },
                     yAxis: {
                         title: {
-                            text:'Meters / {{datapoints_interval|humanize}}',
+                            text:'Meters / {{last_day_interval|humanize}}',
                         },
                         min: 0,
                     },
                     series: [{
                         type: 'area',
                         name: 'Distance',
-                        data: data,
+                        data: dayData,
+                    }],
+                    time: {
+                        useUTC: false,
+                    },
+                    tooltip: {
+                        valueDecimals: 2
+                    },
+                    credits: {
+                        enabled: false,
+                    },
+                });
+
+                const weekChart = Highcharts.chart({
+                    chart: {
+                        renderTo: 'lastWeekChart',
+                        type: 'line',
+                        zoomType: 'x',
+                    },
+                    title: {
+                        text: 'Last 7 Days',
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        min: weekStartTime.toDate().getTime(),
+                        max: weekEndTime.toDate().getTime(),
+                    },
+                    yAxis: {
+                        title: {
+                            text:'Meters / {{last_week_interval|humanize}}',
+                        },
+                        min: 0,
+                    },
+                    series: [{
+                        type: 'area',
+                        name: 'Distance',
+                        data: weekData,
                     }],
                     time: {
                         useUTC: false,

@@ -1,6 +1,7 @@
 import flask
 import sqlite3
 import datetime
+from contextlib import contextmanager
 
 
 def get_db():
@@ -54,3 +55,16 @@ def _sqlite_convert_timestamp(val):
     val = datetime.datetime(year, month, day, hours, minutes, seconds,
                             microseconds)
     return val
+
+
+@contextmanager
+def use_cursor(*args, **kwargs):
+    """ Context manager that will acquire a database connection and cursor
+        and close the cursor at the end of the with: scope.
+    """
+
+    cursor = get_db().cursor(*args, **kwargs)
+    try:
+        yield cursor
+    finally:
+        cursor.close()
