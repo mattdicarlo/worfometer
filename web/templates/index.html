@@ -15,32 +15,32 @@
         <div id="lastDayChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
         <div id="lastWeekChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
         <div id="textData">
-            <p>{{last_day_rotations | humanize}} rotations
-               ({{last_day_distance_meters | humanize}} meters,
-               {{last_day_distance_miles | humanize}} miles) in the last 24 hours.</p>
-            <p>{{last_week_rotations | humanize}} rotations
-               ({{last_week_distance_meters | humanize}} meters,
-               {{last_week_distance_miles | humanize}} miles) in the last 7 days.</p>
+            <p>{{last_day.rotations | humanize}} rotations
+               ({{last_day.distance_meters | humanize}} meters,
+               {{last_day.distance_miles | humanize}} miles) in the last 24 hours.</p>
+            <p>{{last_week.rotations | humanize}} rotations
+               ({{last_week.distance_meters | humanize}} meters,
+               {{last_week.distance_miles | humanize}} miles) in the last 7 days.</p>
         </div>
 
         <script>
             const dayData = [
-                {% for ii in last_day_data%}[
+                {% for ii in last_day.data%}[
                     moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
                     {{ii[2]}}
                 ],{% endfor %}
             ];
-            const dayStartTime = moment.utc('{{last_day_start_time|dt_iso}}');
-            const dayEndTime = moment.utc('{{last_day_end_time|dt_iso}}');
+            const dayStartTime = moment.utc('{{last_day.start_time|dt_iso}}');
+            const dayEndTime = moment.utc('{{last_day.end_time|dt_iso}}');
 
             const weekData = [
-                {% for ii in last_week_data%}[
+                {% for ii in last_week.data%}[
                     moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
                     {{ii[2]}}
                 ],{% endfor %}
             ];
-            const weekStartTime = moment.utc('{{last_week_start_time|dt_iso}}');
-            const weekEndTime = moment.utc('{{last_week_end_time|dt_iso}}');
+            const weekStartTime = moment.utc('{{last_week.start_time|dt_iso}}');
+            const weekEndTime = moment.utc('{{last_week.end_time|dt_iso}}');
 
 
             document.addEventListener('DOMContentLoaded', function () {
@@ -60,7 +60,7 @@
                     },
                     yAxis: {
                         title: {
-                            text:'Meters / {{last_day_interval|humanize}}',
+                            text:'Meters / {{last_day.interval|humanize}}',
                         },
                         min: 0,
                     },
@@ -96,7 +96,7 @@
                     },
                     yAxis: {
                         title: {
-                            text:'Meters / {{last_week_interval|humanize}}',
+                            text:'Meters / {{last_week.interval|humanize}}',
                         },
                         min: 0,
                     },
