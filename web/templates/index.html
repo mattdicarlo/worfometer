@@ -15,12 +15,14 @@
         <div id="lastDayChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
         <div id="lastWeekChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
         <div id="textData">
-            <p>{{last_day.rotations | humanize}} rotations
-               ({{last_day.distance_meters | humanize}} meters,
-               {{last_day.distance_miles | humanize}} miles) in the last 24 hours.</p>
-            <p>{{last_week.rotations | humanize}} rotations
-               ({{last_week.distance_meters | humanize}} meters,
-               {{last_week.distance_miles | humanize}} miles) in the last 7 days.</p>
+            <p>{{last_day.distance_miles | humanize}} miles
+               ({{last_day.distance_meters | humanize}} meters, {{last_day.rotations | humanize}} rotations)
+               in the last 24 hours.
+            </p>
+            <p>{{last_week.distance_miles | humanize}} miles
+               ({{last_week.distance_meters | humanize}} meters, {{last_week.rotations | humanize}} rotations)
+               in the last 7 days.
+            </p>
         </div>
 
         <script>
