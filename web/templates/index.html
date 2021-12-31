@@ -11,18 +11,20 @@
         </style>
     </head>
     <body>
-        <h1>Hedgehog Spinnies</h1>
-        <div id="lastDayChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
-        <div id="lastWeekChart" style="padding-left: 5%; width: 90%; height: 400px;"></div>
-        <div id="textData">
-            <p>{{last_day.distance_miles | humanize}} miles
-               ({{last_day.distance_meters | humanize}} meters, {{last_day.rotations | humanize}} rotations)
-               in the last 24 hours.
-            </p>
-            <p>{{last_week.distance_miles | humanize}} miles
-               ({{last_week.distance_meters | humanize}} meters, {{last_week.rotations | humanize}} rotations)
-               in the last 7 days.
-            </p>
+        <div id="content" style="margin-left: 2.5%; margin-right: 2.5%;">
+            <h1>Hedgehog Spinnies</h1>
+            <div id="lastDayChart" style="width: 100%; height: 400px;"></div>
+            <div id="lastWeekChart" style="width: 100%; height: 400px;"></div>
+            <div id="textData">
+                <p>{{last_day.distance_miles | humanize}} miles
+                   ({{last_day.distance_meters | humanize}} meters, {{last_day.rotations | humanize}} rotations)
+                   in the last 24 hours.
+                </p>
+                <p>{{last_week.distance_miles | humanize}} miles
+                   ({{last_week.distance_meters | humanize}} meters, {{last_week.rotations | humanize}} rotations)
+                   in the last 7 days.
+                </p>
+            </div>
         </div>
 
         <script>
