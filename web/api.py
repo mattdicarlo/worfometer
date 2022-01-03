@@ -26,6 +26,19 @@ def get_rotations_data(start: datetime, end: datetime, interval: timedelta):
     return datapoints
 
 
+def get_rotations_sum(start: datetime, end: datetime):
+    with use_cursor() as cursor:
+        res = cursor.execute(
+            """SELECT SUM(rotations)
+               FROM odometer_event
+               WHERE event_time >= ? AND event_time < ?;
+            """,
+            [start, end]
+        )
+        rotations = res.fetchone()[0] or 0
+        return rotations
+
+
 @bp.route('/api/v1/rotations', methods=['GET'])
 def get_rotations():
     pass

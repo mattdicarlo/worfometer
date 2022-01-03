@@ -1,4 +1,4 @@
-from api import get_rotations_data
+from api import get_rotations_data, get_rotations_sum
 from datetime import timedelta
 from util import utc_now, ceil_dt, rotations_to_meters, meters_to_miles
 import flask
@@ -23,6 +23,9 @@ def index():
     last_week_rotations = sum([ii[1] for ii in last_week_data])
     last_week_distance = rotations_to_meters(last_week_rotations)
 
+    last_month_rotations = get_rotations_sum(now - timedelta(days=30), now)
+    last_month_distance = rotations_to_meters(last_month_rotations)
+
     return flask.render_template(
         'index.html',
         last_day={
@@ -43,4 +46,9 @@ def index():
             'distance_meters': last_week_distance,
             'distance_miles': meters_to_miles(last_week_distance),
         },
+        last_month={
+            'rotations': last_month_rotations,
+            'distance_meters': last_month_distance,
+            'distance_miles': meters_to_miles(last_month_distance),
+        }
     )
