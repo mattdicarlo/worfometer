@@ -1,6 +1,7 @@
 
 import flask
 import routes
+import api
 import persistence
 
 
@@ -24,6 +25,7 @@ def create_app(extra_config=None):
 
     # Apply blueprints to set up routing
     app.register_blueprint(routes.bp)
+    app.register_blueprint(api.bp)
 
     register_filters(app)
 
