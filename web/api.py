@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 from persistence import use_cursor
-from util import interval_dts, rotations_to_meters, meters_to_miles, utc_now, ceil_dt
+from util import interval_dts, utc_now, to_utc
+from util import rotations_to_meters, meters_to_miles, meters_to_feet
 import flask
 import humanize
 
@@ -12,7 +13,7 @@ def get_rotations_data(start: datetime, end: datetime, interval: timedelta):
     datapoints = []
 
     with use_cursor() as cursor:
-        for interval_start in interval_dts(start, interval, end):
+        for interval_start in interval_dts(to_utc(start), interval, to_utc(end)):
             interval_end = interval_start + interval
             res = cursor.execute(
                 """SELECT SUM(rotations)
@@ -22,7 +23,15 @@ def get_rotations_data(start: datetime, end: datetime, interval: timedelta):
                 [interval_start, interval_end]
             )
             rotations = res.fetchone()[0] or 0
-            datapoints.append([interval_start, rotations, rotations_to_meters(rotations)])
+            meters = rotations_to_meters(rotations)
+            datapoints.append({
+                'interval_start': interval_start,
+                'interval_end': interval_end,
+                'rotations': rotations,
+                'meters': meters,
+                'feet': meters_to_feet(meters),
+                'miles': meters_to_miles(meters),
+            })
 
     return datapoints
 
@@ -34,7 +43,7 @@ def get_rotations_sum(start: datetime, end: datetime):
                FROM odometer_event
                WHERE event_time >= ? AND event_time < ?;
             """,
-            [start, end]
+            [to_utc(start), to_utc(end)]
         )
         rotations = res.fetchone()[0] or 0
         return rotations

@@ -40,3 +40,7 @@ def rotations_to_meters(rotations: int) -> float:
 
 def meters_to_miles(meters: float) -> float:
     return meters / 1609.344
+
+
+def meters_to_feet(meters: float) -> float:
+    return meters * 3.28084

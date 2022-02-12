@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
+        <!--       .-------------.        -->
+        <!--   _.-'               `--.    -->
+        <!--  /     I'm Worf, and     \   -->
+        <!-- (       this is my        )  -->
+        <!--  `.      website.       ,'   -->
+        <!--   | ,-.             _.-'     -->
+        <!--   |/   `-----------'         -->
+        <!--  🦔                          -->
         <title>Worfometer</title>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -18,7 +26,7 @@
         <div id="content" style="margin-left: 2.5%; margin-right: 2.5%;">
             <h1>Hedgehog Spinnies</h1>
             <div id="lastDayChart" style="width: 100%; height: 400px;"></div>
-            <div id="lastWeekChart" style="width: 100%; height: 400px;"></div>
+            <div id="lastMonthChart" style="width: 100%; height: 400px;"></div>
             <div id="textData">
                 <p>{{last_day.distance_miles | humanize}} miles
                    ({{last_day.distance_meters | humanize}} meters, {{last_day.rotations | humanize}} rotations)
@@ -38,21 +46,21 @@
         <script>
             const dayData = [
                 {% for ii in last_day.data%}[
-                    moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
-                    {{ii[2]}}
+                    moment.utc('{{ii.interval_start|dt_iso}}').toDate().getTime(),
+                    {{ii.feet}}
                 ],{% endfor %}
             ];
             const dayStartTime = moment.utc('{{last_day.start_time|dt_iso}}');
             const dayEndTime = moment.utc('{{last_day.end_time|dt_iso}}');
 
-            const weekData = [
-                {% for ii in last_week.data%}[
-                    moment.utc('{{ii[0]|dt_iso}}').toDate().getTime(),
-                    {{ii[2]}}
+            const monthData = [
+                {% for ii in last_month.data%}[
+                    moment.utc('{{ii.interval_start|dt_iso}}').toDate().getTime(),
+                    {{ii.miles}}
                 ],{% endfor %}
             ];
-            const weekStartTime = moment.utc('{{last_week.start_time|dt_iso}}');
-            const weekEndTime = moment.utc('{{last_week.end_time|dt_iso}}');
+            const monthStartTime = moment.utc('{{last_month.start_time|dt_iso}}');
+            const monthEndTime = moment.utc('{{last_month.end_time|dt_iso}}');
 
 
             document.addEventListener('DOMContentLoaded', function () {
@@ -72,13 +80,13 @@
                     },
                     yAxis: {
                         title: {
-                            text:'Meters / {{last_day.interval|humanize}}',
+                            text:'Feet / {{last_day.interval|humanize}}',
                         },
                         min: 0,
                     },
                     series: [{
                         type: 'area',
-                        name: 'Distance',
+                        name: 'Feet',
                         data: dayData,
                     }],
                     time: {
@@ -92,30 +100,29 @@
                     },
                 });
 
-                const weekChart = Highcharts.chart({
+                const monthChart = Highcharts.chart({
                     chart: {
-                        renderTo: 'lastWeekChart',
+                        renderTo: 'lastMonthChart',
                         type: 'line',
                         zoomType: 'x',
                     },
                     title: {
-                        text: 'Last 7 Days',
+                        text: 'Last 30 Days',
                     },
                     xAxis: {
                         type: 'datetime',
-                        min: weekStartTime.toDate().getTime(),
-                        max: weekEndTime.toDate().getTime(),
+                        min: monthStartTime.toDate().getTime(),
+                        max: monthEndTime.toDate().getTime(),
                     },
                     yAxis: {
                         title: {
-                            text:'Meters / {{last_week.interval|humanize}}',
+                            text:'Miles / {{last_month.interval|humanize}}',
                         },
                         min: 0,
                     },
                     series: [{
-                        type: 'area',
-                        name: 'Distance',
-                        data: weekData,
+                        name: 'Miles',
+                        data: monthData,
                     }],
                     time: {
                         useUTC: false,
