@@ -29,7 +29,7 @@ def index():
     # it's past noon already.
     local_now = utc_now().astimezone()
     local_noon = datetime(local_now.year, local_now.month, local_now.day, hour=12).astimezone()
-    last_month_end = local_noon if local_noon > local_now else local_noon - timedelta(days=1)
+    last_month_end = local_noon if local_now > local_noon else local_noon - timedelta(days=1)
     last_month_start = last_month_end - timedelta(days=30)
     last_month_interval = timedelta(hours=24)
     last_month_data = get_rotations_data(start=last_month_start, end=last_month_end, interval=last_month_interval)
