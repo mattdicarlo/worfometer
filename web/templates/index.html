@@ -116,10 +116,18 @@
                         }
                     }]
                 };
+
+                const dateTimeLabelFormats = {
+                    minute: '%l:%M %P',
+                    hour: '%l:%M %P',
+                    day: '%b %e',
+                    week: '%b %e',
+                }
+
                 const dayChart = Highcharts.chart({
                     chart: {
                         renderTo: 'lastDayChart',
-                        type: 'line',
+                        type: 'area',
                         zoomType: 'x',
                     },
                     title: {
@@ -128,7 +136,8 @@
                     xAxis: {
                         type: 'datetime',
                         min: dayStartTime.toDate().getTime(),
-                        max: dayEndTime.toDate().getTime(),
+                        softMax: dayEndTime.toDate().getTime(),
+                        dateTimeLabelFormats: dateTimeLabelFormats,
                     },
                     yAxis: {
                         title: {
@@ -137,7 +146,6 @@
                         min: 0,
                     },
                     series: [{
-                        type: 'area',
                         name: 'Feet / {{last_day.interval|humanize}}',
                         data: dayData,
                     }],
@@ -166,6 +174,7 @@
                         type: 'datetime',
                         min: monthStartTime.toDate().getTime(),
                         max: monthEndTime.toDate().getTime(),
+                        dateTimeLabelFormats: dateTimeLabelFormats,
                     },
                     yAxis: {
                         title: {
@@ -181,6 +190,11 @@
                         useUTC: false,
                     },
                     tooltip: {
+                        formatter: function() {
+                            const dateStr = moment(this.x).format('MMM D, YYYY');
+                            return 'Night of ' + dateStr + '<br>' +
+                                   '<strong>' + this.y.toFixed(1) + '</strong> miles';
+                        },
                         valueDecimals: 2
                     },
                     responsive: responsiveConfig,
